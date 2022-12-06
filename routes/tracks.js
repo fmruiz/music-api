@@ -1,5 +1,9 @@
 const express = require('express');
 const router = express.Router();
+
+/**
+ * Tracks controllers
+ */
 const {
     getitems,
     getitem,
@@ -9,13 +13,18 @@ const {
 } = require('../controllers/tracks');
 
 /**
- * Track routes
+ * Tracks validators
+ */
+const { validatorCreateItem } = require('../validators/tracks');
+
+/**
+ * Tracks routes
  */
 router.get('/', getitems);
 
 router.get('/:id', getitem);
 
-router.post('/', createItem);
+router.post('/', validatorCreateItem, createItem);
 
 router.put('/:id', updateItem);
 
