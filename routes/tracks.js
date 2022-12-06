@@ -5,8 +5,8 @@ const router = express.Router();
  * Tracks controllers
  */
 const {
-    getitems,
-    getitem,
+    getItems,
+    getItem,
     createItem,
     updateItem,
     deleteItem,
@@ -23,9 +23,9 @@ const {
 /**
  * Tracks routes
  */
-router.get('/', getitems);
+router.get('/', getItems);
 
-router.get('/:id', validatorGetItem, getitem);
+router.get('/:id', validatorGetItem, getItem);
 
 router.post('/', validatorCreateItem, createItem);
 

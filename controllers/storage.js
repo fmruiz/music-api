@@ -1,14 +1,26 @@
+const fs = require('fs');
 const { storageModel } = require('../models');
+const { handleHttpError } = require('../utils/handleError');
+const { storageErrorMessages } = require('../constants/errorMessages');
 
 /**
  * GET all items
  * @param {*} req
  * @param {*} res
  */
-exports.getitems = async (req, res) => {
-    const data = await storageModel.find({});
+exports.getItems = async (req, res) => {
+    try {
+        const data = await storageModel.find({});
 
-    res.send({ data });
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            storageErrorMessages.getItems.errorName,
+            storageErrorMessages.getItems.errorStatus
+        );
+        console.log({ error });
+    }
 };
 
 /**
@@ -16,8 +28,21 @@ exports.getitems = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-exports.getitem = (req, res) => {
-    res.send('get item');
+exports.getItem = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const data = await storageModel.findById(id);
+
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            storageErrorMessages.getItem.errorName,
+            storageErrorMessages.getItem.errorStatus
+        );
+        console.log({ error });
+    }
 };
 
 /**
@@ -26,25 +51,25 @@ exports.getitem = (req, res) => {
  * @param {*} res
  */
 exports.createItem = async (req, res) => {
-    const { file } = req;
+    try {
+        const { file } = req;
 
-    const fileData = {
-        filename: file.filename,
-        url: `${process.env.PUBLIC_URL}/${file.filename}`,
-    };
+        const fileData = {
+            filename: file.filename,
+            url: `${process.env.PUBLIC_URL}/${file.filename}`,
+        };
 
-    const data = await storageModel.create(fileData);
+        const data = await storageModel.create(fileData);
 
-    res.send({ data });
-};
-
-/**
- * PUT or edit an item
- * @param {*} req
- * @param {*} res
- */
-exports.updateItem = (req, res) => {
-    res.send('update item');
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            storageErrorMessages.createItem.errorName,
+            storageErrorMessages.createItem.errorStatus
+        );
+        console.log({ error });
+    }
 };
 
 /**
@@ -53,9 +78,30 @@ exports.updateItem = (req, res) => {
  * @param {*} res
  */
 exports.deleteItem = async (req, res) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const data = await storageModel.findByIdAndDelete(id);
+        const dataFile = await storageModel.findByIdAndDelete(id);
 
-    res.send({ data });
+        const { filename } = dataFile;
+
+        const filePath = `${__dirname}/../storage/${filename}`;
+
+        // We use this to delete from the storage folder
+        fs.unlinkSync(filePath);
+
+        const data = {
+            filePath,
+            deleted: true,
+        };
+
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            storageErrorMessages.deleteItem.errorName,
+            storageErrorMessages.deleteItem.errorStatus
+        );
+        console.log({ error });
+    }
 };

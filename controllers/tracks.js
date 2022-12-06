@@ -7,7 +7,7 @@ const { tracksErrorMessages } = require('../constants/errorMessages');
  * @param {*} req
  * @param {*} res
  */
-exports.getitems = async (req, res) => {
+exports.getItems = async (req, res) => {
     try {
         const data = await tracksModel.find({});
 
@@ -27,7 +27,7 @@ exports.getitems = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-exports.getitem = async (req, res) => {
+exports.getItem = async (req, res) => {
     try {
         const { id } = req.params;
 
