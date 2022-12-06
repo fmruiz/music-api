@@ -27,8 +27,21 @@ exports.getitems = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-exports.getitem = (req, res) => {
-    res.send('get item');
+exports.getitem = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const data = await tracksModel.findById(id);
+
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            tracksErrorMessages.getItem.errorName,
+            tracksErrorMessages.getItem.errorStatus
+        );
+        console.log({ error });
+    }
 };
 
 /**
@@ -58,8 +71,21 @@ exports.createItem = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-exports.updateItem = (req, res) => {
-    res.send('update item');
+exports.updateItem = async (req, res) => {
+    try {
+        const { id, ...body } = req;
+
+        const data = await tracksModel.findOneAndUpdate(id, body);
+
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            tracksErrorMessages.updateItem.errorName,
+            tracksErrorMessages.updateItem.errorStatus
+        );
+        console.log({ error });
+    }
 };
 
 /**
@@ -68,9 +94,18 @@ exports.updateItem = (req, res) => {
  * @param {*} res
  */
 exports.deleteItem = async (req, res) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const data = await tracksModel.findByIdAndDelete(id);
+        const data = await tracksModel.findByIdAndDelete(id);
 
-    res.send({ data });
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            tracksErrorMessages.deleteItem.errorName,
+            tracksErrorMessages.deleteItem.errorStatus
+        );
+        console.log({ error });
+    }
 };

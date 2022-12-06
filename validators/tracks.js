@@ -4,6 +4,14 @@ const validateResults = require('../utils/handleValidator');
 /**
  * Tracks validators
  */
+exports.validatorGetItem = [
+    check('mediaId').exists().notEmpty().isMongoId(),
+
+    (req, res, next) => {
+        return validateResults(req, res, next);
+    },
+];
+
 exports.validatorCreateItem = [
     check('name').exists().notEmpty().isLength({ min: 5, max: 90 }),
 

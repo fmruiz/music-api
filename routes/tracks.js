@@ -15,18 +15,21 @@ const {
 /**
  * Tracks validators
  */
-const { validatorCreateItem } = require('../validators/tracks');
+const {
+    validatorCreateItem,
+    validatorGetItem,
+} = require('../validators/tracks');
 
 /**
  * Tracks routes
  */
 router.get('/', getitems);
 
-router.get('/:id', getitem);
+router.get('/:id', validatorGetItem, getitem);
 
 router.post('/', validatorCreateItem, createItem);
 
-router.put('/:id', updateItem);
+router.put('/:id', validatorGetItem, validatorCreateItem, updateItem);
 
 router.delete('/:id', deleteItem);
 
