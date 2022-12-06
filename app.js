@@ -10,14 +10,20 @@ const app = express();
 const port = process.env.PORT || 8081;
 
 /**
+ * Middlewares
+ */
+app.use(cors());
+app.use(express.json());
+
+/**
  * Connect DB
  */
 dbConnect();
 
 /**
- * Middlewares
+ * Routes
  */
-app.use(cors());
+app.use('/api/tracks', require('./routes/tracks'));
 
 /**
  * Server initialization
