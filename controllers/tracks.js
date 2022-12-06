@@ -1,4 +1,6 @@
 const { tracksModel } = require('../models');
+const { handleHttpError } = require('../utils/handleError');
+const { tracksErrorMessages } = require('../constants/errorMessages');
 
 /**
  * GET all items
@@ -6,9 +8,18 @@ const { tracksModel } = require('../models');
  * @param {*} res
  */
 exports.getitems = async (req, res) => {
-    const data = await tracksModel.find({});
+    try {
+        const data = await tracksModel.find({});
 
-    res.send({ data });
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            tracksErrorMessages.getItems.errorName,
+            tracksErrorMessages.getItems.errorStatus
+        );
+        console.log({ error });
+    }
 };
 
 /**
@@ -26,11 +37,20 @@ exports.getitem = (req, res) => {
  * @param {*} res
  */
 exports.createItem = async (req, res) => {
-    const { body } = req;
+    try {
+        const { body } = req;
 
-    const data = await tracksModel.create(body);
+        const data = await tracksModel.create(body);
 
-    res.send({ data });
+        res.send({ data });
+    } catch (error) {
+        handleHttpError(
+            res,
+            tracksErrorMessages.createItem.errorName,
+            tracksErrorMessages.createItem.errorStatus
+        );
+        console.log({ error });
+    }
 };
 
 /**
