@@ -11,9 +11,9 @@ const dbConnect = () => {
         },
         (err, res) => {
             if (!err) {
-                console.log('===== CONEXION CORRECTA =====');
+                console.log('===== CONEXION DB CORRECTA =====');
             } else {
-                console.log('===== ERROR DE CONEXION =====');
+                console.log('===== ERROR DE CONEXION DB =====');
             }
         }
     );
