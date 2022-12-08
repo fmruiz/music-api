@@ -13,7 +13,7 @@ const {
 } = require('../controllers/storage');
 
 /**
- * Storage Validators
+ * Storage validators
  */
 const { validatorGetItem } = require('../validators/storage');
 

@@ -26,6 +26,7 @@ dbConnect();
  */
 app.use('/api/tracks', require('./routes/tracks'));
 app.use('/api/storage', require('./routes/storage'));
+app.use('/api/auth', require('./routes/auth'));
 
 /**
  * Server initialization
